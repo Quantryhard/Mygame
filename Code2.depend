@@ -1,0 +1,41 @@
+# depslib dependency file v1.0
+1741970854 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
+	<iostream>
+	<SDL.h>
+	<SDL_image.h>
+	<SDL_mixer.h>
+	<SDL_ttf.h>
+	"CommonFunc.h"
+	"BaseObject.h"
+	"gameMap.h"
+	"mainObject.h"
+
+1741807522 source:d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.cpp
+	"CommonFunc.h"
+
+1741970358 d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.h
+	<SDL.h>
+
+1741923374 source:d:\game_ltnc_24020283_luongtuquan\code2\baseobject.cpp
+	"BaseObject.h"
+	"CommonFunc.h"
+	<SDL_image.h>
+
+1741927977 d:\game_ltnc_24020283_luongtuquan\code2\baseobject.h
+	"CommonFunc.h"
+
+1741928566 source:d:\game_ltnc_24020283_luongtuquan\code2\gamemap.cpp
+	"gameMap.h"
+	<stdio.h>
+
+1741970358 d:\game_ltnc_24020283_luongtuquan\code2\gamemap.h
+	"CommonFunc.h"
+	"BaseObject.h"
+
+1741970772 source:d:\game_ltnc_24020283_luongtuquan\code2\mainobject.cpp
+	"mainObject.h"
+
+1741970358 d:\game_ltnc_24020283_luongtuquan\code2\mainobject.h
+	"CommonFunc.h"
+	"BaseObject.h"
+

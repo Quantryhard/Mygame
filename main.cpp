@@ -1,0 +1,84 @@
+#include <iostream>
+
+#include <SDL.h>
+#include <SDL_image.h>
+#include <SDL_mixer.h>
+#include <SDL_ttf.h>
+#include "CommonFunc.h"
+#include "BaseObject.h"
+#include "gameMap.h"
+#include "mainObject.h"
+using namespace std;
+BaseObject gBackground ;
+bool init(){
+    if(SDL_Init(SDL_INIT_VIDEO)!=0){
+        return false ;
+    }
+    SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY,"1");
+    gWindow = SDL_CreateWindow("My game" , SDL_WINDOWPOS_CENTERED , SDL_WINDOWPOS_CENTERED , SCREEN_WIDTH , SCREEN_HEIGHT , SDL_WINDOW_SHOWN);
+    if(gWindow == NULL){
+        cout<<SDL_GetError()<<endl;
+        return false;
+    }
+    else{
+        gRender = SDL_CreateRenderer(gWindow,-1,SDL_RENDERER_ACCELERATED);
+        if(gRender == NULL){
+            cout<<SDL_GetError()<<endl;
+            return false;
+        }
+        else{
+            SDL_SetRenderDrawColor(gRender,0xff,0xff,0xff,0xff);
+            int imFlags = IMG_INIT_PNG ;
+            if(!IMG_Init(imFlags)&&imFlags){
+                cout<<IMG_GetError()<<endl;
+                return false;
+            }
+        }
+    }
+    return true;
+
+}
+bool loadBackground(){
+    bool f = gBackground.loadIMG("image/background.png",gRender);
+    if(!f){
+        return false;
+    }
+    return true ;
+}
+int main(int argc , char* argv[])
+{
+    if(!init()){
+        return -1;
+    }
+    if(!loadBackground()){
+        return -1;
+    }
+    gameMap gMap;
+    gMap.loadMap("map/map01.dat");
+    gMap.loadTiles(gRender);
+
+    mainObject p_player ;
+    p_player.loadIMG("image/player_right.png",gRender);
+    p_player.set_clips();
+    bool quit = false ;
+    while(!quit){
+        while(SDL_PollEvent(&gEvent) !=0){
+            if(gEvent.type == SDL_QUIT){
+                quit = true ;
+            }
+            p_player.handelInputaction(gEvent,gRender);
+        }
+
+        SDL_SetRenderDrawColor(gRender , 0xff,0xff,0xff,0xff);
+        SDL_RenderClear(gRender);
+
+        gBackground.render(gRender , NULL);
+        gMap.drawMap(gRender);
+        Map map_data = gMap.getMap();
+        p_player.doPlayer(map_data);
+        p_player.show(gRender);
+        SDL_RenderPresent(gRender);
+        SDL_Delay(20);
+    }
+    return 0;
+}
