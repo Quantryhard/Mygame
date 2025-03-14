@@ -3,7 +3,7 @@
 const float GRAVITY = 0.8;
 #define MAX_FALL_SPEED 10
 #define PLAYER_SPEED 8
-
+#define JUMP -17
 mainObject::mainObject(){
     frame = 0 ;
     x_pos = 0 ;
@@ -19,6 +19,9 @@ mainObject::mainObject(){
     input_type.down = 0;
     input_type.isJumping = 0 ;
     onGround = false ;
+    map_x_ = 0 ;
+    map_y_ = 0 ;
+    comeBack = 0 ;
 }
 mainObject::~mainObject(){
 }
@@ -55,8 +58,8 @@ void mainObject::show(SDL_Renderer* des){
     else{
         frame = 0 ;
     }
-    rect.x = x_pos ;
-    rect.y = y_pos ;
+    rect.x = x_pos - map_x_;
+    rect.y = y_pos - map_y_;
     SDL_Rect* current_clip = &frame_clip[frame] ;
 
     SDL_Rect renderQuad ={rect.x , rect.y , width_frame , height_frame};
@@ -66,15 +69,17 @@ void mainObject::show(SDL_Renderer* des){
 void mainObject::handelInputaction(SDL_Event e,SDL_Renderer* screen){
     if(e.type == SDL_KEYDOWN){
         switch(e.key.keysym.sym){
+        case SDLK_UP:
+            status = WALK_UP ;
+            input_type.up = 1 ;
+            break;
         case SDLK_RIGHT:
             status = WALK_RIGHT ;
             input_type.right = 1;
-            input_type.left = 0;
             break ;
         case SDLK_LEFT:
             status = WALK_LEFT;
             input_type.left = 1 ;
-            input_type.right = 0;
             break;
         default:
             break;
@@ -89,26 +94,62 @@ void mainObject::handelInputaction(SDL_Event e,SDL_Renderer* screen){
         case SDLK_LEFT:
             input_type.left = -1;
             break;
+        case SDLK_UP:
+            input_type.up = -1 ;
+            break;
         default:
             break;
         }
     }
 }
 void mainObject::doPlayer(Map& map_data){
-    x_v = 0 ;
-    y_v += GRAVITY ;
-    if(y_v >= MAX_FALL_SPEED){ // gioi han roi tu do
-        y_v = MAX_FALL_SPEED ;
-    }
-    if(input_type.left == 1){
-        x_v -= PLAYER_SPEED;
-    }
-    else{
+    if(comeBack == 0){
+        x_v = 0 ;
+        y_v += GRAVITY ;
+        if(y_v >= MAX_FALL_SPEED){ // gioi han roi tu do
+            y_v = MAX_FALL_SPEED ;
+        }
+        if(input_type.left == 1){
+            x_v -= PLAYER_SPEED;
+        }
         if(input_type.right == 1){
-            x_v +=PLAYER_SPEED;
+                x_v +=PLAYER_SPEED;
+            }
+        if(input_type.up == 1){
+            if(onGround){
+                y_v += JUMP ;
+
+            }
+            onGround = false ;
+            input_type.up = -1 ;
+        }
+        checkTomap(map_data);//ktra va cham
+        centerEntityonmap(map_data); // tính toán di chuyển bản đồ
+    }
+    if(comeBack > 0) {
+        comeBack--;
+        if(comeBack == 0){
+            y_v = 0;
+            x_v = 0;
+            y_pos = 0 ;
         }
     }
-    checkTomap(map_data);
+}
+void mainObject::centerEntityonmap(Map& map_data){
+    map_data.startX = x_pos - (SCREEN_WIDTH/2);
+    if(map_data.startX < 0){
+        map_data.startX = 0 ;
+    }
+    else if(map_data.startX + SCREEN_WIDTH >= map_data.maxX){
+        map_data.startX = map_data.maxX - SCREEN_WIDTH ;
+    }
+    map_data.startY = y_pos - (SCREEN_HEIGHT/2);
+    if(map_data.startY < 0){
+        map_data.startY = 0;
+    }
+    else if(map_data.startY + SCREEN_HEIGHT >= map_data.maxY){
+        map_data.startY = map_data.maxY - SCREEN_HEIGHT ;
+    }
 }
 void mainObject::checkTomap(Map& map_data){
     int x1 = 0 ;
@@ -127,7 +168,7 @@ void mainObject::checkTomap(Map& map_data){
     if(x1 >= 0 && x2 < MAX_MAP_X && y1>=0 && y2 <MAX_MAP_Y){
         if(x_v > 0){ // khi nhan vat chuyen sang phai
             if(map_data.tile[y1][x2] != BLANK_TILE || map_data.tile[y2][x2] != BLANK_TILE){
-                x_pos = x2*TILE_SIZE-width_frame+1;
+                x_pos = x2*TILE_SIZE-width_frame-1;
                 x_v = 0;
                 }
             }
@@ -170,5 +211,7 @@ void mainObject::checkTomap(Map& map_data){
     else if(x_pos +width_frame >map_data.maxX){
         x_pos = map_data.maxX - width_frame;
     }
-
+    if(y_pos > map_data.maxY){
+        comeBack = 60 ;
+    }
 }

@@ -12,7 +12,7 @@ static const int SCREEN_PIXEL = 32;
 static const int COLOR_KEY_R = 167;
 static const int COLOR_KEY_G = 175;
 static const int COLOR_KEY_B = 180;
-
+static const int FRAME_PER_SECOND = 60;
 static SDL_Window* gWindow;
 static SDL_Renderer* gRender;
 static SDL_Event gEvent;

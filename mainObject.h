@@ -11,6 +11,8 @@ public:
     enum walkType{
         WALK_RIGHT = 0,
         WALK_LEFT = 1,
+        WALK_UP = 2,
+        WALK_DOWN = 3,
     };
     virtual bool loadIMG(char* path , SDL_Renderer* screen);
     void show(SDL_Renderer* des);
@@ -18,6 +20,8 @@ public:
     void set_clips();// xu li animetion
     void doPlayer(Map &map_data);
     void checkTomap(Map& map_data);
+    void setMapXY(const int map_x , const int map_y){map_x_ = map_x; map_y_ = map_y;};
+    void centerEntityonmap(Map& map_data);
 private:
     float x_v ; // speed x
     float y_v ; // speed y
@@ -32,5 +36,8 @@ private:
     int frame ; //
     int status ; // trạng thái trái phải lên xuống
     bool onGround ;
+    int map_x_;
+    int map_y_;
+    int comeBack ;
 };
 #endif // MAINOBJECT_H
