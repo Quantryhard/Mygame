@@ -79,6 +79,7 @@ int main(int argc , char* argv[])
 
         Map map_data = gMap.getMap();
 
+        p_player.handleBullet(gRender);
         p_player.setMapXY(map_data.startX,map_data.startY);
         p_player.doPlayer(map_data);
         p_player.show(gRender);

@@ -3,7 +3,7 @@
 const float GRAVITY = 0.8;
 #define MAX_FALL_SPEED 10
 #define PLAYER_SPEED 8
-#define JUMP -17
+#define JUMP -20
 mainObject::mainObject(){
     frame = 0 ;
     x_pos = 0 ;
@@ -12,7 +12,7 @@ mainObject::mainObject(){
     y_v = 0 ;
     width_frame = 0;
     height_frame = 0 ;
-    status = -1 ;
+    status = WALK_NONE ;
     input_type.left = 0;
     input_type.right = 0 ;
     input_type.up = 0 ;
@@ -44,46 +44,61 @@ void mainObject::set_clips(){ // hàm cắt ảnh từ ảnh chính
     }
 }// co the sua
 void mainObject::show(SDL_Renderer* des){
-    if(status == WALK_LEFT){
-        loadIMG("image/player_left.png",des);
-    }
-    else{
-        if(status == WALK_RIGHT){
-            loadIMG("image/player_right.png",des);
-        }
-    }
+    updateImageplayer(des);
     if(input_type.left == 1 || input_type.right ==1 ){
         frame = (frame+1)%8;
     }
     else{
         frame = 0 ;
     }
-    rect.x = x_pos - map_x_;
-    rect.y = y_pos - map_y_;
-    SDL_Rect* current_clip = &frame_clip[frame] ;
+    if(comeBack == 0){
+        rect.x = x_pos - map_x_;
+        rect.y = y_pos - map_y_;
+        SDL_Rect* current_clip = &frame_clip[frame] ;
 
-    SDL_Rect renderQuad ={rect.x , rect.y , width_frame , height_frame};
-    SDL_RenderCopy(des,pObject ,current_clip,&renderQuad);
+        SDL_Rect renderQuad ={rect.x , rect.y , width_frame , height_frame};
+        SDL_RenderCopy(des,pObject ,current_clip,&renderQuad);
+    }
 
 }
 void mainObject::handelInputaction(SDL_Event e,SDL_Renderer* screen){
     if(e.type == SDL_KEYDOWN){
         switch(e.key.keysym.sym){
         case SDLK_UP:
-            status = WALK_UP ;
+           // status = WALK_UP ;
             input_type.up = 1 ;
+            updateImageplayer(screen);
             break;
         case SDLK_RIGHT:
             status = WALK_RIGHT ;
             input_type.right = 1;
+            input_type.left = 0 ;
+            updateImageplayer(screen);
             break ;
         case SDLK_LEFT:
             status = WALK_LEFT;
             input_type.left = 1 ;
+            input_type.right = 0 ;
+            updateImageplayer(screen);
             break;
-        default:
-            break;
+        case SDLK_SPACE:
+            bulletObject* p_bullet = new bulletObject();
+            p_bullet->loadIMG("image/player_bullet.png",screen);
 
+            if(status == WALK_LEFT){
+                p_bullet->set_bullet_dir(bulletObject::DIR_LEFT);
+                p_bullet->SetRect(this->rect.x,rect.y+height_frame*0.3);
+            }
+            else{
+                p_bullet->set_bullet_dir(bulletObject::DIR_RIGHT);
+                p_bullet->SetRect(this->rect.x+width_frame -20,rect.y+height_frame*0.3);
+            }
+           // p_bullet->SetRect(this->rect.x + width_frame - 20 , rect.y + height_frame*0.3);
+            p_bullet->set_x_val(20);
+            p_bullet->set_y_val(20);
+            p_bullet->set_is_move(true);
+            p_bullet_list.push_back(p_bullet);
+            break;
         }
     }
     else if(e.type = SDL_KEYUP){
@@ -102,8 +117,27 @@ void mainObject::handelInputaction(SDL_Event e,SDL_Renderer* screen){
         }
     }
 }
+void mainObject::handleBullet(SDL_Renderer* des){
+    for(int i = 0 ; i < p_bullet_list.size() ; i++){
+        bulletObject* p_bullet = p_bullet_list.at(i);
+        if(p_bullet != NULL){
+            if(p_bullet->get_is_move() == true){
+                p_bullet->handleMove(SCREEN_WIDTH,SCREEN_HEIGHT);
+                p_bullet->render(des);
+            }
+        }
+        else{
+            p_bullet_list.erase(p_bullet_list.begin()+i);
+            if(p_bullet != NULL){
+                delete p_bullet;
+                p_bullet = NULL ;
+            }
+        }
+    }
+}
 void mainObject::doPlayer(Map& map_data){
     if(comeBack == 0){
+
         x_v = 0 ;
         y_v += GRAVITY ;
         if(y_v >= MAX_FALL_SPEED){ // gioi han roi tu do
@@ -129,6 +163,10 @@ void mainObject::doPlayer(Map& map_data){
     if(comeBack > 0) {
         comeBack--;
         if(comeBack == 0){
+            onGround = false;
+            if(x_pos > 256){
+                x_pos-=256 ; // lùi 4 ô
+            }
             y_v = 0;
             x_v = 0;
             y_pos = 0 ;
@@ -194,6 +232,9 @@ void mainObject::checkTomap(Map& map_data){
                 y_pos -= (height_frame+1);
                 y_v = 0 ;
                 onGround = true ;
+                if(status == WALK_NONE){
+                     status = WALK_RIGHT;
+                }
             }
         }
         else if(y_v < 0){
@@ -213,5 +254,27 @@ void mainObject::checkTomap(Map& map_data){
     }
     if(y_pos > map_data.maxY){
         comeBack = 60 ;
+    }
+}
+void mainObject::updateImageplayer(SDL_Renderer* des){
+    if(onGround == true){
+        if(status == WALK_LEFT){
+            loadIMG("image/player_left.png",des);
+
+        }
+        else{
+            if(status == WALK_RIGHT){
+                loadIMG("image/player_right.png",des);
+
+            }
+        }
+    }
+    else{
+        if(status == WALK_LEFT){
+            loadIMG("image/jum_left.png",des);
+        }
+        else if(status == WALK_RIGHT){
+            loadIMG("image/jum_right.png",des);
+        }
     }
 }

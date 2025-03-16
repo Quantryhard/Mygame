@@ -36,8 +36,12 @@
 		<Unit filename="BaseObject.h" />
 		<Unit filename="CommonFunc.cpp" />
 		<Unit filename="CommonFunc.h" />
+		<Unit filename="bulletObject.cpp" />
+		<Unit filename="bulletObject.h" />
 		<Unit filename="gameMap.cpp" />
 		<Unit filename="gameMap.h" />
+		<Unit filename="impTimer.cpp" />
+		<Unit filename="impTimer.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mainObject.cpp" />
 		<Unit filename="mainObject.h" />

@@ -1,18 +1,20 @@
 #ifndef MAINOBJECT_H
 #define MAINOBJECT_H
-
+#include <vector> // luu tru bang dan
 #include "CommonFunc.h"
 #include "BaseObject.h"
+#include "bulletObject.h"
 class mainObject : public BaseObject
 {
 public:
     mainObject();
     ~mainObject();
     enum walkType{
-        WALK_RIGHT = 0,
-        WALK_LEFT = 1,
-        WALK_UP = 2,
-        WALK_DOWN = 3,
+        WALK_NONE = 0,
+        WALK_RIGHT = 1,
+        WALK_LEFT = 2,
+//        WALK_UP = 3,
+//        WALK_DOWN = 4,
     };
     virtual bool loadIMG(char* path , SDL_Renderer* screen);
     void show(SDL_Renderer* des);
@@ -22,7 +24,14 @@ public:
     void checkTomap(Map& map_data);
     void setMapXY(const int map_x , const int map_y){map_x_ = map_x; map_y_ = map_y;};
     void centerEntityonmap(Map& map_data);
+    void updateImageplayer(SDL_Renderer* des );
+    void set_bullet_list(std::vector<bulletObject*> bullet_list){
+        p_bullet_list = bullet_list ;
+    }
+    std::vector<bulletObject*> get_bullet_list() const{return p_bullet_list;}
+    void handleBullet(SDL_Renderer* des);
 private:
+    std::vector<bulletObject*> p_bullet_list ;
     float x_v ; // speed x
     float y_v ; // speed y
     float x_pos ; // vị trí x
