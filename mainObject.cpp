@@ -1,9 +1,8 @@
 #include "mainObject.h"
 
 const float GRAVITY = 0.8;
-#define MAX_FALL_SPEED 10
-#define PLAYER_SPEED 8
-#define JUMP -20
+
+
 mainObject::mainObject(){
     frame = 0 ;
     x_pos = 0 ;
@@ -22,6 +21,7 @@ mainObject::mainObject(){
     map_x_ = 0 ;
     map_y_ = 0 ;
     comeBack = 0 ;
+    money_count = 0;
 }
 mainObject::~mainObject(){
 }
@@ -205,12 +205,26 @@ void mainObject::checkTomap(Map& map_data){
 
     if(x1 >= 0 && x2 < MAX_MAP_X && y1>=0 && y2 <MAX_MAP_Y){
         if(x_v > 0){ // khi nhan vat chuyen sang phai
-            if(map_data.tile[y1][x2] != BLANK_TILE || map_data.tile[y2][x2] != BLANK_TILE){
+            int val1 = map_data.tile[y1][x2] ;
+            int val2 = map_data.tile[y2][x2] ;
+            if( val1 == STATE_MONEY || val2 == STATE_MONEY){
+                map_data.tile[y1][x2] = 0 ;
+                map_data.tile[y2][x2] = 0 ;
+                increase_money();
+            }
+            if(val1 != BLANK_TILE || val2 != BLANK_TILE){
                 x_pos = x2*TILE_SIZE-width_frame-1;
                 x_v = 0;
                 }
             }
         else if(x_v < 0){
+            int val1 = map_data.tile[y1][x1] ;
+            int val2 = map_data.tile[y2][x1] ;
+            if( val1 == STATE_MONEY || val2 == STATE_MONEY){
+                map_data.tile[y1][x1] = 0 ;
+                map_data.tile[y2][x1] = 0 ;
+                increase_money();
+            }
             if(map_data.tile[y1][x1] != BLANK_TILE || map_data.tile[y2][x1] != BLANK_TILE){
                 x_pos =(x1+1)*TILE_SIZE ;
                 x_v = 0 ;
@@ -227,7 +241,14 @@ void mainObject::checkTomap(Map& map_data){
 
     if(x1 >=0 && x2 <MAX_MAP_X && y1 >= 0 && y2<MAX_MAP_Y){
         if(y_v > 0){
-            if(map_data.tile[y2][x1] != BLANK_TILE || map_data.tile[y2][x2] != BLANK_TILE){
+            int val1 = map_data.tile[y2][x1] ;
+            int val2 = map_data.tile[y2][x2] ;
+            if(val1 == STATE_MONEY || val2 == STATE_MONEY){
+                map_data.tile[y2][x1] = 0 ;
+                map_data.tile[y2][x2] = 0 ;
+                increase_money();
+            }
+            if( val1 != BLANK_TILE || val2 != BLANK_TILE){
                 y_pos = y2*TILE_SIZE ;
                 y_pos -= (height_frame+1);
                 y_v = 0 ;
@@ -238,6 +259,13 @@ void mainObject::checkTomap(Map& map_data){
             }
         }
         else if(y_v < 0){
+            int val1 = map_data.tile[y1][x1] ;
+            int val2 = map_data.tile[y1][x2] ;
+            if(val1 == STATE_MONEY || val2 == STATE_MONEY){
+                map_data.tile[y1][x1] = 0 ;
+                map_data.tile[y1][x2] = 0 ;
+                increase_money();
+            }
             if(map_data.tile[y1][x1] != BLANK_TILE || map_data.tile[y1][x2] != BLANK_TILE){
                 y_pos =(y1+1)*TILE_SIZE;
                 y_v = 0 ;
@@ -253,8 +281,11 @@ void mainObject::checkTomap(Map& map_data){
         x_pos = map_data.maxX - width_frame;
     }
     if(y_pos > map_data.maxY){
-        comeBack = 60 ;
+        comeBack = COMEBACK_PLAYER ;
     }
+}
+void mainObject::increase_money(){
+    money_count++;
 }
 void mainObject::updateImageplayer(SDL_Renderer* des){
     if(onGround == true){

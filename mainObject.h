@@ -29,6 +29,7 @@ public:
         p_bullet_list = bullet_list ;
     }
     std::vector<bulletObject*> get_bullet_list() const{return p_bullet_list;}
+    void increase_money();
     void handleBullet(SDL_Renderer* des);
 private:
     std::vector<bulletObject*> p_bullet_list ;
@@ -48,5 +49,6 @@ private:
     int map_x_;
     int map_y_;
     int comeBack ;
+    int money_count ;
 };
 #endif // MAINOBJECT_H

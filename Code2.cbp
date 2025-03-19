@@ -45,6 +45,8 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="mainObject.cpp" />
 		<Unit filename="mainObject.h" />
+		<Unit filename="threatObject.cpp" />
+		<Unit filename="threatObject.h" />
 		<Extensions>
 			<lib_finder disable_auto="1" />
 		</Extensions>

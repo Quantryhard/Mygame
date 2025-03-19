@@ -9,6 +9,7 @@
 #include "gameMap.h"
 #include "mainObject.h"
 #include "impTimer.h"
+#include "threatObject.h"
 using namespace std;
 BaseObject gBackground ;
 bool init(){
@@ -89,7 +90,7 @@ int main(int argc , char* argv[])
         gMap.drawMap(gRender);
 
         SDL_RenderPresent(gRender);
-        //SDL_Delay(20);
+        // SDL_Delay(100);
         int real_imp_time = fps_time.get_ticks();
         int time_one_frame = 1000/FRAME_PER_SECOND;//MS
         if(real_imp_time < time_one_frame){

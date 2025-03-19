@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1742056800 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
+1742354480 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
@@ -10,11 +10,12 @@
 	"gameMap.h"
 	"mainObject.h"
 	"impTimer.h"
+	"threatObject.h"
 
 1741807522 source:d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.cpp
 	"CommonFunc.h"
 
-1741976183 d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.h
+1742362156 d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.h
 	<SDL.h>
 
 1742055679 source:d:\game_ltnc_24020283_luongtuquan\code2\baseobject.cpp
@@ -33,10 +34,10 @@
 	"CommonFunc.h"
 	"BaseObject.h"
 
-1742059618 source:d:\game_ltnc_24020283_luongtuquan\code2\mainobject.cpp
+1742354920 source:d:\game_ltnc_24020283_luongtuquan\code2\mainobject.cpp
 	"mainObject.h"
 
-1742056216 d:\game_ltnc_24020283_luongtuquan\code2\mainobject.h
+1742316441 d:\game_ltnc_24020283_luongtuquan\code2\mainobject.h
 	<vector>
 	"CommonFunc.h"
 	"BaseObject.h"
@@ -52,6 +53,13 @@
 	"bulletObject.h"
 
 1742059397 d:\game_ltnc_24020283_luongtuquan\code2\bulletobject.h
+	"BaseObject.h"
+	"CommonFunc.h"
+
+1742264538 source:d:\game_ltnc_24020283_luongtuquan\code2\threatobject.cpp
+	"threatObject.h"
+
+1742316569 d:\game_ltnc_24020283_luongtuquan\code2\threatobject.h
 	"BaseObject.h"
 	"CommonFunc.h"
 
