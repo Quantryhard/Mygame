@@ -38,6 +38,8 @@
 		<Unit filename="CommonFunc.h" />
 		<Unit filename="bulletObject.cpp" />
 		<Unit filename="bulletObject.h" />
+		<Unit filename="explosionObject.cpp" />
+		<Unit filename="explosionObject.h" />
 		<Unit filename="gameMap.cpp" />
 		<Unit filename="gameMap.h" />
 		<Unit filename="impTimer.cpp" />
@@ -45,6 +47,8 @@
 		<Unit filename="main.cpp" />
 		<Unit filename="mainObject.cpp" />
 		<Unit filename="mainObject.h" />
+		<Unit filename="textObject.cpp" />
+		<Unit filename="textObject.h" />
 		<Unit filename="threatObject.cpp" />
 		<Unit filename="threatObject.h" />
 		<Extensions>

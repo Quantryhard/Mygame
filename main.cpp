@@ -3,16 +3,20 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 #include <SDL_ttf.h>
+#include <windows.h>
 #include "CommonFunc.h"
 #include "BaseObject.h"
 #include "gameMap.h"
 #include "mainObject.h"
 #include "impTimer.h"
 #include "threatObject.h"
-
+#include "explosionObject.h"
+#include "textObject.h"
 using namespace std;
 
+
 BaseObject gBackground ;
+TTF_Font* font_time = NULL;
 bool init(){
     if(SDL_Init(SDL_INIT_VIDEO)!=0){
         return false ;
@@ -35,6 +39,13 @@ bool init(){
             if(!IMG_Init(imFlags)&&imFlags){
                 cout<<IMG_GetError()<<endl;
                 return false;
+            }
+            if(TTF_Init()==-1){
+                return false ;
+            }
+            font_time = TTF_OpenFont("font/dlxfont_.ttf",15);
+            if(font_time == NULL){
+                return false ;
             }
         }
     }
@@ -59,10 +70,10 @@ vector<threatObject*> makeThreatList(){
         if(p_threat != NULL){
             p_threat->loadIMG("image/threat_level.png",gRender);
             p_threat->setClips();
-            p_threat->set_x_pos(650+i*1200); // rải rác
+            p_threat->set_x_pos(850+i*1200); // rải rác
             p_threat->set_y_pos(200); // độ cao rơi
             p_threat->set_type_move(threatObject::STATIC_THREAT);//gắn tĩnh
-            p_threat->set_input_left(0);
+            p_threat->set_input_left(200);
 
             bulletObject* p_bullet = new bulletObject();
             p_threat->initBullet(p_bullet,gRender);
@@ -115,8 +126,19 @@ int main(int argc , char* argv[])
     mainObject p_player ;
     p_player.loadIMG("image/player_right.png",gRender);
     p_player.set_clips();
-    bool quit = false ;
+
     vector<threatObject*> threats_list = makeThreatList();
+
+    explosionObject exp_threat ;
+    bool tRet = exp_threat.loadIMG("image/exp3.png",gRender);
+    exp_threat.setClip();
+    if(!tRet) return -1;
+    int heart = 0 ;
+
+    textObject time_game ;
+    time_game.setColor(textObject::WHITE_TEXT);
+
+    bool quit = false ;
     while(!quit){
         fps_time.start();
         while(SDL_PollEvent(&gEvent) !=0){
@@ -142,17 +164,54 @@ int main(int argc , char* argv[])
         gMap.drawMap(gRender);
 
         for(int i = 0 ; i < threats_list.size() ; i++){
-            threatObject* p = threats_list.at(i);
-            if(p != NULL){
-                p->setmapXY(map_data.startX,map_data.startY);
-                p->imMovetype(gRender);
-                p->doPlayer(map_data);
-                p->makeBullet(gRender,SCREEN_WIDTH,SCREEN_HEIGHT);
-                p->show(gRender);
+            threatObject* p_threat = threats_list.at(i);
+            if(p_threat != NULL){
+                p_threat->setmapXY(map_data.startX,map_data.startY);
+                p_threat->imMovetype(gRender);
+                p_threat->doPlayer(map_data);
+                p_threat->makeBullet(gRender,SCREEN_WIDTH,SCREEN_HEIGHT);
+                p_threat->show(gRender);
+                SDL_Rect rect_player = p_player.getRectframe();
+                bool bCol1 = false ;
+                vector<bulletObject*> tBullet_list = p_threat->get_bullet_list();
+                for(int j = 0 ; j < tBullet_list.size() ;j++){
+                    bulletObject* pt_bullet = tBullet_list.at(j);
+                    if(pt_bullet){
+                        bCol1 = SDLCommonFunc::checkCollision(rect_player,pt_bullet->GetRect());
+                        if(bCol1){
+
+                            p_threat->removeBullet(j);
+                            break;
+                        }
+                    }
+                }
+
+
+                SDL_Rect rect_threat = p_threat->getRectframe();
+                bool bCol2 = false ;
+                bCol2 = SDLCommonFunc::checkCollision(rect_player,rect_threat);
+                if(bCol1 || bCol2){
+                    heart++;
+                    if(heart < 3){
+                        p_player.SetRect(0,200);
+                        p_player.setComebacktime(60);
+                        continue;
+
+                    }
+                    else if(MessageBox(NULL,"GAME OVER", "Info" , MB_OK | MB_ICONSTOP) == IDOK){
+                        p_threat->free();
+                        close();
+                        return 0 ;
+                    }
+                }
+
+
+
             }
 
         }
-
+        int frame_exp_width = exp_threat.get_frame_width();
+        int frame_exp_height = exp_threat.get_frame_height();
         vector<bulletObject*> bullet_arr = p_player.get_bullet_list();
         for(int j = 0 ; j < bullet_arr.size() ; j++){
             bulletObject* p_bullet = bullet_arr.at(j);
@@ -169,6 +228,14 @@ int main(int argc , char* argv[])
                         SDL_Rect bRect = p_bullet->GetRect();
                         bool bCol = SDLCommonFunc::checkCollision(bRect,tRect);
                         if(bCol){
+                            for(int ex = 0 ; ex < NUM_FRAME_EXP ; ex++){
+                                int x_pos = p_bullet->GetRect().x - frame_exp_width*0.5;
+                                int y_pos = p_bullet->GetRect().y - frame_exp_height*0.5;
+
+                                exp_threat.setFrame(ex);
+                                exp_threat.SetRect(x_pos,y_pos);
+                                exp_threat.show(gRender);
+                            }
                             p_player.removeBullet(j);
                             obj_threat->free();
                             threats_list.erase(threats_list.begin()+k);
@@ -176,6 +243,26 @@ int main(int argc , char* argv[])
                     }
                 }
             }
+        }
+
+        // show time
+        string str_time = "Time: ";
+        Uint32 time_val = SDL_GetTicks()  / 1000 ;
+        Uint32 val_time = 300 - time_val ;
+        if(val_time <= 0){
+            if(MessageBox(NULL,"GAME OVER", "Info" , MB_OK | MB_ICONSTOP) == IDOK){
+                quit = true ;
+                break ;
+
+            }
+        }
+        else{
+            string str_val = to_string(val_time);
+            str_time +=str_val ;
+
+            time_game.setText(str_time);
+            time_game.loadFromRenderText(font_time,gRender);
+            time_game.renderText(gRender,SCREEN_WIDTH - 200 , 15);
         }
         SDL_RenderPresent(gRender);
         // SDL_Delay(100);

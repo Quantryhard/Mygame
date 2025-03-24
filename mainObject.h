@@ -32,6 +32,8 @@ public:
     void removeBullet(const int &indx);
     void increase_money();
     void handleBullet(SDL_Renderer* des);
+    void setComebacktime(const int cb){comeBack = cb;}
+    SDL_Rect getRectframe();
 private:
     std::vector<bulletObject*> p_bullet_list ;
     float x_v ; // speed x

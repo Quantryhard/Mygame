@@ -47,6 +47,25 @@ void threatObject::show(SDL_Renderer* des){
         SDL_RenderCopy(des,pObject,currentClip,&renderQuad);
     }
 }
+SDL_Rect threatObject::getRectframe(){
+    SDL_Rect rect_frame;
+    rect_frame.x = rect.x;
+    rect_frame.y = rect.y;
+    rect_frame.w = width_frame ;
+    rect_frame.h = height_frame ;
+    return rect_frame ;
+}
+void threatObject::removeBullet(const int& indx){
+    int size = bullet_list.size();
+    if(size>0 && indx <size){
+        bulletObject* p_bullet = bullet_list.at(indx);
+        bullet_list.erase(bullet_list.begin()+indx);
+        if(p_bullet){
+            delete p_bullet;
+            p_bullet = NULL;
+        }
+    }
+}
 void threatObject::doPlayer(Map& gMap){
     if(comeBack == 0){
         x_v = 0;

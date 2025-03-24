@@ -6,7 +6,7 @@ const float GRAVITY = 0.8;
 mainObject::mainObject(){
     frame = 0 ;
     x_pos = 0 ;
-    y_pos = 0 ;
+    y_pos = 200 ;
     x_v = 0 ;
     y_v = 0 ;
     width_frame = 0;
@@ -32,6 +32,14 @@ bool mainObject::loadIMG(char *path , SDL_Renderer* screen){
         height_frame = rect.h ;
     }
     return ret ;
+}
+SDL_Rect mainObject::getRectframe(){
+    SDL_Rect rect_frame;
+    rect_frame.x = rect.x;
+    rect_frame.y = rect.y;
+    rect_frame.w = width_frame ;
+    rect_frame.h = height_frame ;
+    return rect_frame ;
 }
 void mainObject::set_clips(){ // hàm cắt ảnh từ ảnh chính
     if(width_frame > 0 && height_frame > 0){
