@@ -6,6 +6,11 @@
 
 class threatObject : public BaseObject
 {
+public:
+    enum typeMove{
+        STATIC_THREAT = 0 ,
+        MOVE_IN_SPACE_THREAT = 1 ,
+    };
     threatObject();
     ~threatObject();
     void set_x_v(const float & xV) {x_v = xV;}
@@ -25,7 +30,14 @@ class threatObject : public BaseObject
     int get_width_frame() const{return width_frame;}
     int get_height_frame() const{return height_frame;}
     void doPlayer(Map& gMap);
+    void initThreat();
     void checkTomap(Map& gMap);
+
+    void set_type_move(const int& typeMove_){type_move = typeMove_;}
+    void setAnimationpos(const int &pos_l , const int& pos_r){animation_l = pos_l ; animation_r = pos_r; }
+    void set_input_left(const int& tLeft){input_type.left = tLeft;}
+    void imMovetype(SDL_Renderer* gScreen);
+
 private:
     int map_x ;
     int map_y ;
@@ -39,6 +51,9 @@ private:
     int width_frame ;
     int height_frame ;
     int frame ;
-
+    int type_move ;
+    int animation_l ;
+    int animation_r ;
+    input input_type ;
 };
 #endif // THREATOBJECT_H

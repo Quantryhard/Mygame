@@ -3,6 +3,7 @@
 #define COMMONFUNC_H
 
 #include <SDL.h>
+#include <vector>
 
 //SCREEN
 static const int SCREEN_WIDTH = 1280;
@@ -24,9 +25,9 @@ static SDL_Event gEvent;
 #define PLAYER_SPEED 8 // toc do nhan vat
 #define JUMP -20 // luc nhay
 #define THREAT_FRAME_NUM 8// so frame anh bot
-#define THREAT_SPEED 10 /// doc do cua bot
+#define THREAT_GRAVITY_SPEED 10 /// độ rơi tự do của threat
 #define COMEBACK_PLAYER 60 // thoi gian hoi sinh
-
+#define THREAT_SPEED 3
 typedef struct input{
     int left ;
     int right ;
