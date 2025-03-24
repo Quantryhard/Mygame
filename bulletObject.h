@@ -17,6 +17,10 @@ public:
         DIR_DOWN_LEFT = 25 ,
         DIR_DOWN_RIGHT = 26,
     };
+    enum bulletType{
+        SPHERE_BULLET = 50 ,
+        LASER_BULLET = 51 ,
+    };
     void set_x_val(const int&x_val) {x_v = x_val;};
     void set_y_val(const int&y_val) {y_v = y_val;};
     int get_x_val()const {return x_v;}
@@ -26,12 +30,17 @@ public:
     bool get_is_move() const {return is_move;}
 
     void set_bullet_dir(const unsigned int bullet_dir_) {bullet_dir = bullet_dir_;}
+
+    void set_bullet_type(const unsigned int& bulletType) {bullet_type = bulletType;}
+    unsigned int get_bullet_type() const {return bullet_type;}
     void handleMove(const int &x_border , const int &y_border);
     int get_bullet_dir() const{return bullet_dir;}
+    bool loadIMGBullet(SDL_Renderer* des);
 private:
     int x_v ;
     int y_v ;
     bool is_move ;
     unsigned int bullet_dir ;
+    unsigned int bullet_type ;
 };
 #endif // BULLETOBJECT_H

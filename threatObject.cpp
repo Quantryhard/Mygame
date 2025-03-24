@@ -180,3 +180,38 @@ void threatObject::imMovetype(SDL_Renderer* gScreen) {
         }
     }
 }
+void threatObject::initBullet(bulletObject* p_bullet ,SDL_Renderer* gScreen){
+    if(p_bullet != NULL){
+        p_bullet->set_bullet_type(bulletObject::LASER_BULLET);
+        bool ret = p_bullet->loadIMGBullet(gScreen);
+        if(ret){
+            p_bullet->loadIMGBullet(gScreen);
+        p_bullet->set_is_move(true);
+        p_bullet->set_bullet_dir(bulletObject::DIR_LEFT);
+        p_bullet->SetRect(rect.x+ 10 , rect.y +10);
+        p_bullet->set_x_val(15);
+        bullet_list.push_back(p_bullet);
+        }
+    }
+}
+void threatObject::makeBullet(SDL_Renderer* gScreen , const int& x_limit , const int& y_limit){
+    for(int i = 0 ; i < bullet_list.size(); i++){
+        bulletObject* p_bullet = bullet_list.at(i);
+        if(p_bullet != NULL){
+            if(p_bullet->get_is_move()){
+                int bullet_distance = rect.x - p_bullet->GetRect().x;
+                if(bullet_distance < 300 ){
+                    p_bullet->handleMove(x_limit,y_limit);
+                    p_bullet->render(gScreen);
+                }
+                else{
+                    p_bullet->set_is_move(false);
+                }
+            }
+            else{
+                p_bullet->set_is_move(true);
+                p_bullet->SetRect(rect.x+10,rect.y+10);
+            }
+        }
+    }
+}

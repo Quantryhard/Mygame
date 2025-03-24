@@ -83,21 +83,22 @@ void mainObject::handelInputaction(SDL_Event e,SDL_Renderer* screen){
             break;
         case SDLK_SPACE:
             bulletObject* p_bullet = new bulletObject();
-            p_bullet->loadIMG("image/player_bullet.png",screen);
+            p_bullet->set_bullet_type(bulletObject::SPHERE_BULLET);
+            p_bullet->loadIMGBullet(screen);
 
-            if(status == WALK_LEFT){
-                p_bullet->set_bullet_dir(bulletObject::DIR_LEFT);
-                p_bullet->SetRect(this->rect.x,rect.y+height_frame*0.3);
-            }
-            else{
-                p_bullet->set_bullet_dir(bulletObject::DIR_RIGHT);
-                p_bullet->SetRect(this->rect.x+width_frame -20,rect.y+height_frame*0.3);
-            }
+        if(status == WALK_LEFT){
+            p_bullet->set_bullet_dir(bulletObject::DIR_LEFT);
+            p_bullet->SetRect(this->rect.x,rect.y+height_frame*0.3);
+        }
+        else{
+            p_bullet->set_bullet_dir(bulletObject::DIR_RIGHT);
+            p_bullet->SetRect(this->rect.x+width_frame -20,rect.y+height_frame*0.3);
+        }
            // p_bullet->SetRect(this->rect.x + width_frame - 20 , rect.y + height_frame*0.3);
-            p_bullet->set_x_val(20);
-            p_bullet->set_y_val(20);
-            p_bullet->set_is_move(true);
-            p_bullet_list.push_back(p_bullet);
+        p_bullet->set_x_val(20);
+        p_bullet->set_y_val(20);
+        p_bullet->set_is_move(true);
+        p_bullet_list.push_back(p_bullet);
             break;
         }
     }

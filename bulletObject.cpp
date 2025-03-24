@@ -4,8 +4,19 @@ bulletObject::bulletObject(){
     x_v = 0 ;
     y_v = 0 ;
     is_move = false ;
+    bullet_type = SPHERE_BULLET ;
 };
 bulletObject::~bulletObject(){
+}
+bool bulletObject::loadIMGBullet(SDL_Renderer* des){
+    bool ret = false ;
+    if(bullet_type == LASER_BULLET){
+        ret = loadIMG("image/laser_bullet.png",des);
+    }
+    else{
+        ret = loadIMG("image/sphere_bullet.png",des);
+    }
+    return ret ;
 }
 void bulletObject::handleMove(const int&x_border , const int &y_border){
     if(bullet_dir == DIR_RIGHT){

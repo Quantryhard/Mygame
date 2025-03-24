@@ -51,38 +51,53 @@ bool loadBackground(){
 vector<threatObject*> makeThreatList(){
     vector<threatObject*> list_threats;
 
-    threatObject* dynamic_threat = new threatObject[20];//động
-    for(int i = 0 ; i < 20 ; i++){
-        threatObject* p = (dynamic_threat + i);
-        if(p != NULL){
-            p->loadIMG("image/threat_left.png",gRender);
-            p->setClips();
-            p->set_type_move(threatObject::MOVE_IN_SPACE_THREAT); // set ở dạng tĩnh
-            p->set_x_pos(900+i*700);
-            p->set_y_pos(200);
 
-            int pos1 = p->get_x_pos() - 100;
-            int pos2 = p->get_x_pos() + 100;
-            p->setAnimationpos(pos1,pos2);
-            p->set_input_left(1);
-            list_threats.push_back(p);
-        }
-    }
     threatObject* threat_objs = new threatObject[20];// tĩnh
 
     for(int i = 0 ; i < 20 ; i++){
-        threatObject* p = (threat_objs+i);
-        if(p != NULL){
-            p->loadIMG("image/threat_level.png",gRender);
-            p->setClips();
-            p->set_x_pos(900+i*1200); // rải rác
-            p->set_y_pos(0); // độ cao rơi
-            p->set_type_move(threatObject::STATIC_THREAT);
-            p->set_input_left(0);
-            list_threats.push_back(p);
+        threatObject* p_threat = (threat_objs+i);
+        if(p_threat != NULL){
+            p_threat->loadIMG("image/threat_level.png",gRender);
+            p_threat->setClips();
+            p_threat->set_x_pos(650+i*1200); // rải rác
+            p_threat->set_y_pos(200); // độ cao rơi
+            p_threat->set_type_move(threatObject::STATIC_THREAT);//gắn tĩnh
+            p_threat->set_input_left(0);
+
+            bulletObject* p_bullet = new bulletObject();
+            p_threat->initBullet(p_bullet,gRender);
+            list_threats.push_back(p_threat);
+        }
+    }
+    threatObject* dynamic_threat = new threatObject[20];//động
+    for(int i = 0 ; i < 20 ; i++){
+        threatObject* p_threat = (dynamic_threat + i);
+        if(p_threat != NULL){
+            p_threat->loadIMG("image/threat_left.png",gRender);
+            p_threat->setClips();
+            p_threat->set_type_move(threatObject::MOVE_IN_SPACE_THREAT); // set ở dạng tĩnh
+            p_threat->set_x_pos(900+i*700);
+            p_threat->set_y_pos(100);
+
+            int pos1 = p_threat->get_x_pos() - 100;
+            int pos2 = p_threat->get_x_pos() + 100;
+            p_threat->setAnimationpos(pos1,pos2);
+            p_threat->set_input_left(1);
+            list_threats.push_back(p_threat);
         }
     }
     return list_threats ;
+}
+void close(){
+    SDL_DestroyRenderer(gRender);
+    SDL_DestroyWindow(gWindow);
+
+    gRender = NULL;
+    gWindow = NULL;
+
+    SDL_Quit();
+    IMG_Quit();
+
 }
 int main(int argc , char* argv[])
 {
@@ -132,6 +147,7 @@ int main(int argc , char* argv[])
                 p->setmapXY(map_data.startX,map_data.startY);
                 p->imMovetype(gRender);
                 p->doPlayer(map_data);
+                p->makeBullet(gRender,SCREEN_WIDTH,SCREEN_HEIGHT);
                 p->show(gRender);
             }
 
@@ -147,5 +163,14 @@ int main(int argc , char* argv[])
             }
         }
     }
+    for(int i = 0 ; i <threats_list.size() ; i++){
+        threatObject* p_threat = threats_list.at(i);
+        if(p_threat){
+            p_threat->free();
+            p_threat = NULL;
+        }
+    }
+    threats_list.clear();
+    close();
     return 0;
 }

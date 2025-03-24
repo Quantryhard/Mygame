@@ -2,7 +2,7 @@
 #define THREATOBJECT_H
 #include "BaseObject.h"
 #include "CommonFunc.h"
-
+#include "bulletObject.h"
 
 class threatObject : public BaseObject
 {
@@ -37,7 +37,10 @@ public:
     void setAnimationpos(const int &pos_l , const int& pos_r){animation_l = pos_l ; animation_r = pos_r; }
     void set_input_left(const int& tLeft){input_type.left = tLeft;}
     void imMovetype(SDL_Renderer* gScreen);
-
+    std::vector<bulletObject*> get_bullet_list()const{return bullet_list;}
+    void set_bullet_list(const std::vector<bulletObject*> &bl_list){bullet_list = bl_list;}
+    void initBullet(bulletObject* p_bullet , SDL_Renderer* gScreen);
+    void makeBullet(SDL_Renderer* gScreen , const int& x_limit , const int& y_limit);
 private:
     int map_x ;
     int map_y ;
@@ -55,5 +58,6 @@ private:
     int animation_l ;
     int animation_r ;
     input input_type ;
+    std::vector<bulletObject*> bullet_list ;
 };
 #endif // THREATOBJECT_H

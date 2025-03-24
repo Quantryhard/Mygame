@@ -37,3 +37,17 @@ void BaseObject::free(){
     rect.w = 0;
     rect.h = 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
