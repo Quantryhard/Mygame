@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1742790339 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
+1742820032 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
@@ -12,10 +12,10 @@
 	"impTimer.h"
 	"threatObject.h"
 
-1741807522 source:d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.cpp
+1742815327 source:d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.cpp
 	"CommonFunc.h"
 
-1742746252 d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.h
+1742815126 d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.h
 	<SDL.h>
 	<vector>
 
@@ -35,10 +35,10 @@
 	"CommonFunc.h"
 	"BaseObject.h"
 
-1742787034 source:d:\game_ltnc_24020283_luongtuquan\code2\mainobject.cpp
+1742820020 source:d:\game_ltnc_24020283_luongtuquan\code2\mainobject.cpp
 	"mainObject.h"
 
-1742736130 d:\game_ltnc_24020283_luongtuquan\code2\mainobject.h
+1742820020 d:\game_ltnc_24020283_luongtuquan\code2\mainobject.h
 	<vector>
 	"CommonFunc.h"
 	"BaseObject.h"

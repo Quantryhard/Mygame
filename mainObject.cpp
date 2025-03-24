@@ -136,6 +136,17 @@ void mainObject::handleBullet(SDL_Renderer* des){
         }
     }
 }
+void mainObject::removeBullet(const int& indx){
+    int size = p_bullet_list.size();
+    if(size>0 && indx <size){
+        bulletObject* p_bullet = p_bullet_list.at(indx);
+        p_bullet_list.erase(p_bullet_list.begin()+indx);
+        if(p_bullet){
+            delete p_bullet;
+            p_bullet = NULL;
+        }
+    }
+}
 void mainObject::doPlayer(Map& map_data){
     if(comeBack == 0){
 

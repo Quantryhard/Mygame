@@ -152,6 +152,31 @@ int main(int argc , char* argv[])
             }
 
         }
+
+        vector<bulletObject*> bullet_arr = p_player.get_bullet_list();
+        for(int j = 0 ; j < bullet_arr.size() ; j++){
+            bulletObject* p_bullet = bullet_arr.at(j);
+            if(p_bullet!=NULL){
+                for(int k = 0 ; k < threats_list.size() ; k++){
+                    threatObject* obj_threat = threats_list.at(k);
+                    if(obj_threat != NULL){
+                        SDL_Rect tRect ;
+                        tRect.x = obj_threat->GetRect().x;
+                        tRect.y = obj_threat->GetRect().y;
+                        tRect.w = obj_threat->get_width_frame();
+                        tRect.h = obj_threat->get_height_frame();
+
+                        SDL_Rect bRect = p_bullet->GetRect();
+                        bool bCol = SDLCommonFunc::checkCollision(bRect,tRect);
+                        if(bCol){
+                            p_player.removeBullet(j);
+                            obj_threat->free();
+                            threats_list.erase(threats_list.begin()+k);
+                        }
+                    }
+                }
+            }
+        }
         SDL_RenderPresent(gRender);
         // SDL_Delay(100);
         int real_imp_time = fps_time.get_ticks();
