@@ -138,6 +138,12 @@ int main(int argc , char* argv[])
     textObject time_game ;
     time_game.setColor(textObject::WHITE_TEXT);
 
+    textObject mark_game ;
+    mark_game.setColor(textObject::WHITE_TEXT);
+    UINT mark_value = 0 ;
+    textObject money_game ;
+    money_game.setColor(textObject::WHITE_TEXT);
+
     bool quit = false ;
     while(!quit){
         fps_time.start();
@@ -228,6 +234,7 @@ int main(int argc , char* argv[])
                         SDL_Rect bRect = p_bullet->GetRect();
                         bool bCol = SDLCommonFunc::checkCollision(bRect,tRect);
                         if(bCol){
+                            mark_value++ ;
                             for(int ex = 0 ; ex < NUM_FRAME_EXP ; ex++){
                                 int x_pos = p_bullet->GetRect().x - frame_exp_width*0.5;
                                 int y_pos = p_bullet->GetRect().y - frame_exp_height*0.5;
@@ -264,6 +271,20 @@ int main(int argc , char* argv[])
             time_game.loadFromRenderText(font_time,gRender);
             time_game.renderText(gRender,SCREEN_WIDTH - 200 , 15);
         }
+
+        string val_str_mark = to_string(mark_value) ;
+        string strMark("Mark: ") ;
+        strMark += val_str_mark ;
+        int moneyCount = p_player.getMoneycount();
+        string money_str = to_string(moneyCount);
+        string moneyDisplay = "Money: ";
+        moneyDisplay+=money_str;
+        money_game.setText(moneyDisplay);
+        money_game.loadFromRenderText(font_time,gRender);
+        money_game.renderText(gRender,SCREEN_WIDTH*0.1-50,15);
+        mark_game.setText(strMark);
+        mark_game.loadFromRenderText(font_time,gRender);
+        mark_game.renderText(gRender,SCREEN_WIDTH*0.5-50,15);
         SDL_RenderPresent(gRender);
         // SDL_Delay(100);
         int real_imp_time = fps_time.get_ticks();

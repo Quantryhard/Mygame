@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1742839710 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
+1742881204 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
@@ -42,7 +42,7 @@
 1742830421 source:d:\game_ltnc_24020283_luongtuquan\code2\mainobject.cpp
 	"mainObject.h"
 
-1742834307 d:\game_ltnc_24020283_luongtuquan\code2\mainobject.h
+1742880898 d:\game_ltnc_24020283_luongtuquan\code2\mainobject.h
 	<vector>
 	"CommonFunc.h"
 	"BaseObject.h"
@@ -80,6 +80,6 @@
 	"CommonFunc.h"
 	<SDL_ttf.h>
 
-1742839005 source:d:\game_ltnc_24020283_luongtuquan\code2\textobject.cpp
+1742880481 source:d:\game_ltnc_24020283_luongtuquan\code2\textobject.cpp
 	"textObject.h"
 

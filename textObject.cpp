@@ -57,17 +57,4 @@ void textObject::renderText(SDL_Renderer* gScreen ,
     }
     SDL_RenderCopyEx(gScreen,loadTexture,clip,&renderQuad,angle,center,flip);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
 }
