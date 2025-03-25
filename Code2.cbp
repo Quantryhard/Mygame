@@ -42,11 +42,15 @@
 		<Unit filename="explosionObject.h" />
 		<Unit filename="gameMap.cpp" />
 		<Unit filename="gameMap.h" />
+		<Unit filename="geoMetric.cpp" />
+		<Unit filename="geoMetric.h" />
 		<Unit filename="impTimer.cpp" />
 		<Unit filename="impTimer.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="mainObject.cpp" />
 		<Unit filename="mainObject.h" />
+		<Unit filename="playPower.cpp" />
+		<Unit filename="playPower.h" />
 		<Unit filename="textObject.cpp" />
 		<Unit filename="textObject.h" />
 		<Unit filename="threatObject.cpp" />

@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1742881204 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
+1742895771 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
@@ -14,6 +14,8 @@
 	"threatObject.h"
 	"explosionObject.h"
 	"textObject.h"
+	"playPower.h"
+	"geoMetric.h"
 
 1742820075 source:d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.cpp
 	"CommonFunc.h"
@@ -54,7 +56,7 @@
 
 1741974539 d:\game_ltnc_24020283_luongtuquan\code2\imptimer.h
 
-1742790510 source:d:\game_ltnc_24020283_luongtuquan\code2\bulletobject.cpp
+1742896036 source:d:\game_ltnc_24020283_luongtuquan\code2\bulletobject.cpp
 	"bulletObject.h"
 
 1742790510 d:\game_ltnc_24020283_luongtuquan\code2\bulletobject.h
@@ -82,4 +84,17 @@
 
 1742880481 source:d:\game_ltnc_24020283_luongtuquan\code2\textobject.cpp
 	"textObject.h"
+
+1742892854 d:\game_ltnc_24020283_luongtuquan\code2\playpower.h
+	"CommonFunc.h"
+	"BaseObject.h"
+
+1742893208 source:d:\game_ltnc_24020283_luongtuquan\code2\playpower.cpp
+	"playPower.h"
+
+1742895142 source:d:\game_ltnc_24020283_luongtuquan\code2\geometric.cpp
+	"geoMetric.h"
+
+1742895753 d:\game_ltnc_24020283_luongtuquan\code2\geometric.h
+	"CommonFunc.h"
 

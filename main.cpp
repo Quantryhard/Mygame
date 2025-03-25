@@ -12,6 +12,8 @@
 #include "threatObject.h"
 #include "explosionObject.h"
 #include "textObject.h"
+#include "playPower.h"
+#include "geoMetric.h"
 using namespace std;
 
 
@@ -127,6 +129,11 @@ int main(int argc , char* argv[])
     p_player.loadIMG("image/player_right.png",gRender);
     p_player.set_clips();
 
+    playPower player_power ;
+    player_power.init(gRender);
+
+    playMoney player_money ;
+    player_money.init(gRender);
     vector<threatObject*> threats_list = makeThreatList();
 
     explosionObject exp_threat ;
@@ -169,6 +176,19 @@ int main(int argc , char* argv[])
         gMap.setMap(map_data);
         gMap.drawMap(gRender);
 
+        //draw geometic
+        geoMetricFormat rectangle_size(0,0,SCREEN_WIDTH,40);
+        colorData color_data(0,0,0);
+        geoMetric::renderRectangle(rectangle_size,color_data,gRender);
+
+        geoMetricFormat outline_size(1,1,SCREEN_WIDTH - 1 ,38);
+        colorData color_data1(255,255,255);
+        geoMetric::renderOutline(outline_size,color_data1,gRender);
+
+
+        player_power.show(gRender);
+        player_money.show(gRender);
+        player_money.setPos(SCREEN_WIDTH*0.3-40,8);
         for(int i = 0 ; i < threats_list.size() ; i++){
             threatObject* p_threat = threats_list.at(i);
             if(p_threat != NULL){
@@ -201,6 +221,8 @@ int main(int argc , char* argv[])
                     if(heart < 3){
                         p_player.SetRect(0,200);
                         p_player.setComebacktime(60);
+                        player_power.decrease();
+                        player_power.render(gRender);
                         continue;
 
                     }
@@ -275,16 +297,20 @@ int main(int argc , char* argv[])
         string val_str_mark = to_string(mark_value) ;
         string strMark("Mark: ") ;
         strMark += val_str_mark ;
+        mark_game.setText(strMark);
+        mark_game.loadFromRenderText(font_time,gRender);
+        mark_game.renderText(gRender,SCREEN_WIDTH*0.6-50,15);
+
+
         int moneyCount = p_player.getMoneycount();
         string money_str = to_string(moneyCount);
-        string moneyDisplay = "Money: ";
+        string moneyDisplay = ": ";
         moneyDisplay+=money_str;
         money_game.setText(moneyDisplay);
         money_game.loadFromRenderText(font_time,gRender);
-        money_game.renderText(gRender,SCREEN_WIDTH*0.1-50,15);
-        mark_game.setText(strMark);
-        mark_game.loadFromRenderText(font_time,gRender);
-        mark_game.renderText(gRender,SCREEN_WIDTH*0.5-50,15);
+        money_game.renderText(gRender,SCREEN_WIDTH*0.3,15);
+
+
         SDL_RenderPresent(gRender);
         // SDL_Delay(100);
         int real_imp_time = fps_time.get_ticks();

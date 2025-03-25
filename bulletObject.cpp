@@ -14,7 +14,7 @@ bool bulletObject::loadIMGBullet(SDL_Renderer* des){
         ret = loadIMG("image/laser_bullet.png",des);
     }
     else{
-        ret = loadIMG("image/sphere_bullet.png",des);
+        ret = loadIMG("image/boss_bullet.png",des);
     }
     return ret ;
 }
