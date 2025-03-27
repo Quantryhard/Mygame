@@ -22,6 +22,7 @@ mainObject::mainObject(){
     map_y_ = 0 ;
     comeBack = 0 ;
     money_count = 0;
+    has_fallen = false ;
 }
 mainObject::~mainObject(){
 }
@@ -69,24 +70,23 @@ void mainObject::show(SDL_Renderer* des){
     }
 
 }
-void mainObject::handelInputaction(SDL_Event e,SDL_Renderer* screen){
-    if(e.type == SDL_KEYDOWN){
-        switch(e.key.keysym.sym){
+void mainObject::handelInputaction(SDL_Event e, SDL_Renderer* screen) {
+    if (e.type == SDL_KEYDOWN) {
+        switch (e.key.keysym.sym) {
         case SDLK_UP:
-           // status = WALK_UP ;
-            input_type.up = 1 ;
+            input_type.up = 1;
             updateImageplayer(screen);
             break;
         case SDLK_RIGHT:
-            status = WALK_RIGHT ;
+            status = WALK_RIGHT;
             input_type.right = 1;
-            input_type.left = 0 ;
+            input_type.left = 0;
             updateImageplayer(screen);
-            break ;
+            break;
         case SDLK_LEFT:
             status = WALK_LEFT;
-            input_type.left = 1 ;
-            input_type.right = 0 ;
+            input_type.left = 1;
+            input_type.right = 0;
             updateImageplayer(screen);
             break;
         case SDLK_SPACE:
@@ -94,32 +94,40 @@ void mainObject::handelInputaction(SDL_Event e,SDL_Renderer* screen){
             p_bullet->set_bullet_type(bulletObject::SPHERE_BULLET);
             p_bullet->loadIMGBullet(screen);
 
-        if(status == WALK_LEFT){
-            p_bullet->set_bullet_dir(bulletObject::DIR_LEFT);
-            p_bullet->SetRect(this->rect.x,rect.y+height_frame*0.3);
-        }
-        else{
-            p_bullet->set_bullet_dir(bulletObject::DIR_RIGHT);
-            p_bullet->SetRect(this->rect.x+width_frame -20,rect.y+height_frame*0.3);
-        }
-           // p_bullet->SetRect(this->rect.x + width_frame - 20 , rect.y + height_frame*0.3);
-        p_bullet->set_x_val(20);
-        p_bullet->set_y_val(20);
-        p_bullet->set_is_move(true);
-        p_bullet_list.push_back(p_bullet);
+            int bullet_x, bullet_y;
+            if (status == WALK_LEFT) {
+                p_bullet->set_bullet_dir(bulletObject::DIR_LEFT);
+                bullet_x = rect.x;
+                bullet_y = rect.y + height_frame * 0.3;
+                p_bullet->SetRect(bullet_x, bullet_y);
+            }
+            else {
+                p_bullet->set_bullet_dir(bulletObject::DIR_RIGHT);
+                bullet_x = rect.x + width_frame - 20;
+                bullet_y = rect.y + height_frame * 0.3;
+                p_bullet->SetRect(bullet_x, bullet_y);
+            }
+
+            // Lưu vị trí ban đầu của viên đạn
+            p_bullet->set_initial_pos(bullet_x, bullet_y);
+
+            p_bullet->set_x_val(20);
+            p_bullet->set_y_val(20);
+            p_bullet->set_is_move(true);
+            p_bullet_list.push_back(p_bullet);
             break;
         }
     }
-    else if(e.type = SDL_KEYUP){
-        switch(e.key.keysym.sym){
+    else if (e.type == SDL_KEYUP) {
+        switch (e.key.keysym.sym) {
         case SDLK_RIGHT:
-            input_type.right = -1;
+            input_type.right = 0;
             break;
         case SDLK_LEFT:
-            input_type.left = -1;
+            input_type.left = 0;
             break;
         case SDLK_UP:
-            input_type.up = -1 ;
+            input_type.up = 0;
             break;
         default:
             break;
@@ -137,6 +145,7 @@ void mainObject::handleBullet(SDL_Renderer* des){
         }
         else{
             p_bullet_list.erase(p_bullet_list.begin()+i);
+            i--;
             if(p_bullet != NULL){
                 delete p_bullet;
                 p_bullet = NULL ;
@@ -302,6 +311,10 @@ void mainObject::checkTomap(Map& map_data){
     }
     if(y_pos > map_data.maxY){
         comeBack = COMEBACK_PLAYER ;
+    }
+    if (y_pos > map_data.maxY) {
+        comeBack = COMEBACK_PLAYER;
+        has_fallen = true; // Đánh dấu rằng nhân vật đã rơi xuống vực
     }
 }
 void mainObject::increase_money(){

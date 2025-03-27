@@ -1,5 +1,5 @@
 # depslib dependency file v1.0
-1742895771 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
+1743101859 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
@@ -17,13 +17,15 @@
 	"playPower.h"
 	"geoMetric.h"
 
-1742820075 source:d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.cpp
+1743081529 source:d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.cpp
 	"CommonFunc.h"
 
-1742839042 d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.h
+1743100787 d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.h
 	<SDL.h>
 	<vector>
 	<string>
+	<cmath>
+	<fstream>
 
 1742787047 source:d:\game_ltnc_24020283_luongtuquan\code2\baseobject.cpp
 	"BaseObject.h"
@@ -33,18 +35,18 @@
 1741927977 d:\game_ltnc_24020283_luongtuquan\code2\baseobject.h
 	"CommonFunc.h"
 
-1741928566 source:d:\game_ltnc_24020283_luongtuquan\code2\gamemap.cpp
+1743099852 source:d:\game_ltnc_24020283_luongtuquan\code2\gamemap.cpp
 	"gameMap.h"
 	<stdio.h>
 
-1741973485 d:\game_ltnc_24020283_luongtuquan\code2\gamemap.h
+1743099852 d:\game_ltnc_24020283_luongtuquan\code2\gamemap.h
 	"CommonFunc.h"
 	"BaseObject.h"
 
-1742830421 source:d:\game_ltnc_24020283_luongtuquan\code2\mainobject.cpp
+1743097874 source:d:\game_ltnc_24020283_luongtuquan\code2\mainobject.cpp
 	"mainObject.h"
 
-1742880898 d:\game_ltnc_24020283_luongtuquan\code2\mainobject.h
+1743096475 d:\game_ltnc_24020283_luongtuquan\code2\mainobject.h
 	<vector>
 	"CommonFunc.h"
 	"BaseObject.h"
@@ -56,17 +58,17 @@
 
 1741974539 d:\game_ltnc_24020283_luongtuquan\code2\imptimer.h
 
-1742896036 source:d:\game_ltnc_24020283_luongtuquan\code2\bulletobject.cpp
+1743098423 source:d:\game_ltnc_24020283_luongtuquan\code2\bulletobject.cpp
 	"bulletObject.h"
 
-1742790510 d:\game_ltnc_24020283_luongtuquan\code2\bulletobject.h
+1743097927 d:\game_ltnc_24020283_luongtuquan\code2\bulletobject.h
 	"BaseObject.h"
 	"CommonFunc.h"
 
-1742829225 source:d:\game_ltnc_24020283_luongtuquan\code2\threatobject.cpp
+1743101378 source:d:\game_ltnc_24020283_luongtuquan\code2\threatobject.cpp
 	"threatObject.h"
 
-1742826097 d:\game_ltnc_24020283_luongtuquan\code2\threatobject.h
+1743099400 d:\game_ltnc_24020283_luongtuquan\code2\threatobject.h
 	"BaseObject.h"
 	"CommonFunc.h"
 	"bulletObject.h"

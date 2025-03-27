@@ -35,8 +35,10 @@ public:
     void setComebacktime(const int cb){comeBack = cb;}
     SDL_Rect getRectframe();
     int getMoneycount() const{return money_count;}
+    bool hasFallen() const { return has_fallen; }
+    void resetFallen() { has_fallen = false; }
 private:
-    std::vector<bulletObject*> p_bullet_list ;
+    std::vector<bulletObject*> p_bullet_list ; // danh sách đạn
     float x_v ; // speed x
     float y_v ; // speed y
     float x_pos ; // vị trí x
@@ -54,5 +56,6 @@ private:
     int map_y_;
     int comeBack ;
     int money_count ;
+    bool has_fallen; // ktra rơi vực
 };
 #endif // MAINOBJECT_H

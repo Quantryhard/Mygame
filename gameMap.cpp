@@ -1,35 +1,46 @@
 #include "gameMap.h"
 #include <stdio.h>
-void gameMap::loadMap(char* name){
-    FILE* fp = NULL ;
-    fopen_s(&fp ,name,"rb");
-    if(fp == NULL){
-        return;
+void gameMap::loadMap(char* path){
+    std::ifstream file(path); // Mở tệp bằng ifstream
+    if (!file.is_open()) {    // Kiểm tra xem tệp có mở thành công không
+        //std::cout << "Failed to open map file: " << path << std::endl;
+
     }
-    game_map.maxX = 0 ;
-    game_map.maxY = 0 ;
-    for(int i = 0 ; i < MAX_MAP_Y ; i++){
-        for(int j = 0 ; j<MAX_MAP_X ; j++){
-            fscanf(fp,"%d",&game_map.tile[i][j]);
-            int val = game_map.tile[i][j];
-            if(val > 0){
-                if(j > game_map.maxX){
-                    game_map.maxX = j;
+
+    game_map.maxX = 0;
+    game_map.maxY = 0;
+
+    // Đọc dữ liệu từ tệp
+    for (int i = 0; i < MAX_MAP_Y; i++) {
+        for (int j = 0; j < MAX_MAP_X; j++) {
+            if (file >> game_map.tile[i][j]) { // Đọc từng số nguyên từ tệp
+                int val = game_map.tile[i][j];
+                if (val > 0) {
+                    if (j > game_map.maxX) {
+                        game_map.maxX = j;
+                    }
+                    if (i > game_map.maxY) {
+                        game_map.maxY = i;
+                    }
                 }
-                if(i > game_map.maxY){
-                    game_map.maxY = i ;
-                }
+            }
+            else {
+                //std::cout << "Error reading map data at position (" << i << ", " << j << ")" << std::endl;
+                file.close();
+
             }
         }
     }
-    game_map.maxX = (game_map.maxX + 1 )*TILE_SIZE;
-    game_map.maxY = (game_map.maxY + 1 )*TILE_SIZE;
+
+    // Tính toán kích thước bản đồ (theo pixel)
+    game_map.maxX = (game_map.maxX + 1) * TILE_SIZE;
+    game_map.maxY = (game_map.maxY + 1) * TILE_SIZE;
 
     game_map.startX = 0;
     game_map.startY = 0;
 
-    game_map.file_name = name ;
-    fclose(fp);
+    game_map.file_name = path;
+    file.close(); // Đóng tệp
 }
 void gameMap::loadTiles(SDL_Renderer* screen){
     char file_img[30];

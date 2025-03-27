@@ -29,9 +29,9 @@ public:
     void show(SDL_Renderer* des);
     int get_width_frame() const{return width_frame;}
     int get_height_frame() const{return height_frame;}
-    void doPlayer(Map& gMap);
+    void doPlayer(Map& gMap , SDL_Renderer* gScreen);
     void initThreat();
-    void checkTomap(Map& gMap);
+    void checkTomap(Map& gMap , SDL_Renderer* gScreen);
 
     void set_type_move(const int& typeMove_){type_move = typeMove_;}
     void setAnimationpos(const int &pos_l , const int& pos_r){animation_l = pos_l ; animation_r = pos_r; }
