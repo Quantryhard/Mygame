@@ -23,6 +23,9 @@ mainObject::mainObject(){
     comeBack = 0 ;
     money_count = 0;
     has_fallen = false ;
+    has_reached_flag = false;
+    sound_beep = NULL;
+    sound_laser = NULL;
 }
 mainObject::~mainObject(){
 }
@@ -111,10 +114,11 @@ void mainObject::handelInputaction(SDL_Event e, SDL_Renderer* screen) {
             // Lưu vị trí ban đầu của viên đạn
             p_bullet->set_initial_pos(bullet_x, bullet_y);
 
-            p_bullet->set_x_val(20);
-            p_bullet->set_y_val(20);
+            p_bullet->set_x_val(15);
+            p_bullet->set_y_val(15);
             p_bullet->set_is_move(true);
             p_bullet_list.push_back(p_bullet);
+            Mix_PlayChannel(-1, sound_laser, 0); // Phát âm thanh khi bắn đạn
             break;
         }
     }
@@ -134,21 +138,18 @@ void mainObject::handelInputaction(SDL_Event e, SDL_Renderer* screen) {
         }
     }
 }
-void mainObject::handleBullet(SDL_Renderer* des){
-    for(int i = 0 ; i < p_bullet_list.size() ; i++){
+void mainObject::handleBullet(SDL_Renderer* des, const Map& map_data) {
+    for (int i = 0; i < p_bullet_list.size(); i++) {
         bulletObject* p_bullet = p_bullet_list.at(i);
-        if(p_bullet != NULL){
-            if(p_bullet->get_is_move() == true){
-                p_bullet->handleMove(SCREEN_WIDTH,SCREEN_HEIGHT);
+        if (p_bullet != NULL) {
+            if (p_bullet->get_is_move() == true) {
+                p_bullet->handleMove(SCREEN_WIDTH, SCREEN_HEIGHT, map_data);
                 p_bullet->render(des);
-            }
-        }
-        else{
-            p_bullet_list.erase(p_bullet_list.begin()+i);
-            i--;
-            if(p_bullet != NULL){
+            } else {
+                p_bullet_list.erase(p_bullet_list.begin() + i);
                 delete p_bullet;
-                p_bullet = NULL ;
+                p_bullet = NULL;
+                i--;
             }
         }
     }
@@ -218,103 +219,120 @@ void mainObject::centerEntityonmap(Map& map_data){
         map_data.startY = map_data.maxY - SCREEN_HEIGHT ;
     }
 }
-void mainObject::checkTomap(Map& map_data){
-    int x1 = 0 ;
-    int x2 = 0 ;
-
+void mainObject::checkTomap(Map& map_data) {
+    int x1 = 0;
+    int x2 = 0;
     int y1 = 0;
     int y2 = 0;
-    //check theo width
-    int height_min = height_frame < TILE_SIZE ? height_frame : TILE_SIZE ;
-    x1 = (x_pos + x_v)/TILE_SIZE;
-    x2 = (x_pos + x_v + width_frame - 1)/TILE_SIZE;
 
-    y1 = (y_pos)/TILE_SIZE ;
-    y2 = (y_pos + height_min - 1)/TILE_SIZE;
+    // Check theo chiều ngang
+    int height_min = height_frame < TILE_SIZE ? height_frame : TILE_SIZE;
+    x1 = (x_pos + x_v) / TILE_SIZE;
+    x2 = (x_pos + x_v + width_frame - 1) / TILE_SIZE;
+    y1 = (y_pos) / TILE_SIZE;
+    y2 = (y_pos + height_min - 1) / TILE_SIZE;
 
-    if(x1 >= 0 && x2 < MAX_MAP_X && y1>=0 && y2 <MAX_MAP_Y){
-        if(x_v > 0){ // khi nhan vat chuyen sang phai
-            int val1 = map_data.tile[y1][x2] ;
-            int val2 = map_data.tile[y2][x2] ;
-            if( val1 == STATE_MONEY || val2 == STATE_MONEY){
-                map_data.tile[y1][x2] = 0 ;
-                map_data.tile[y2][x2] = 0 ;
+    if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
+        if (x_v > 0) {
+            int val1 = map_data.tile[y1][x2];
+            int val2 = map_data.tile[y2][x2];
+            if (val1 == STATE_MONEY || val2 == STATE_MONEY) {
+                map_data.tile[y1][x2] = 0;
+                map_data.tile[y2][x2] = 0;
                 increase_money();
+                Mix_PlayChannel(-1, sound_beep, 0); // Phát âm thanh khi ăn xu
             }
-            if(val1 != BLANK_TILE || val2 != BLANK_TILE){
-                x_pos = x2*TILE_SIZE-width_frame-1;
+            else if (val1 == FLAG_TILE || val2 == FLAG_TILE) {
+                has_reached_flag = true;
+            }
+            if (val1 != BLANK_TILE && val1 != FLAG_TILE || val2 != BLANK_TILE && val2 != FLAG_TILE) {
+                x_pos = x2 * TILE_SIZE - width_frame - 1;
                 x_v = 0;
-                }
             }
-        else if(x_v < 0){
-            int val1 = map_data.tile[y1][x1] ;
-            int val2 = map_data.tile[y2][x1] ;
-            if( val1 == STATE_MONEY || val2 == STATE_MONEY){
-                map_data.tile[y1][x1] = 0 ;
-                map_data.tile[y2][x1] = 0 ;
+        }
+        else if (x_v < 0) {
+            int val1 = map_data.tile[y1][x1];
+            int val2 = map_data.tile[y2][x1];
+            if (val1 == STATE_MONEY || val2 == STATE_MONEY) {
+                map_data.tile[y1][x1] = 0;
+                map_data.tile[y2][x1] = 0;
                 increase_money();
+                Mix_PlayChannel(-1, sound_beep, 0); // Phát âm thanh khi ăn xu
             }
-            if(map_data.tile[y1][x1] != BLANK_TILE || map_data.tile[y2][x1] != BLANK_TILE){
-                x_pos =(x1+1)*TILE_SIZE ;
-                x_v = 0 ;
+            else if (val1 == FLAG_TILE || val2 == FLAG_TILE) {
+                has_reached_flag = true;
+            }
+            if (map_data.tile[y1][x1] != BLANK_TILE && map_data.tile[y1][x1] != FLAG_TILE ||
+                map_data.tile[y2][x1] != BLANK_TILE && map_data.tile[y2][x1] != FLAG_TILE) {
+                x_pos = (x1 + 1) * TILE_SIZE;
+                x_v = 0;
             }
         }
     }
-    // check doc
-    int width_min = width_frame < TILE_SIZE ? width_frame : TILE_SIZE ;
-    x1 = (x_pos)/TILE_SIZE ;
-    x2 = (x_pos + width_min) / TILE_SIZE ;
 
-    y1 = (y_pos + y_v )/TILE_SIZE ;
-    y2 = (y_pos + y_v + height_frame - 1)/TILE_SIZE;
+    // Check theo chiều dọc
+    int width_min = width_frame < TILE_SIZE ? width_frame : TILE_SIZE;
+    x1 = (x_pos) / TILE_SIZE;
+    x2 = (x_pos + width_min) / TILE_SIZE;
+    y1 = (y_pos + y_v) / TILE_SIZE;
+    y2 = (y_pos + y_v + height_frame - 1) / TILE_SIZE;
 
-    if(x1 >=0 && x2 <MAX_MAP_X && y1 >= 0 && y2<MAX_MAP_Y){
-        if(y_v > 0){
-            int val1 = map_data.tile[y2][x1] ;
-            int val2 = map_data.tile[y2][x2] ;
-            if(val1 == STATE_MONEY || val2 == STATE_MONEY){
-                map_data.tile[y2][x1] = 0 ;
-                map_data.tile[y2][x2] = 0 ;
+    if (x1 >= 0 && x2 < MAX_MAP_X && y1 >= 0 && y2 < MAX_MAP_Y) {
+        if (y_v > 0) {
+            int val1 = map_data.tile[y2][x1];
+            int val2 = map_data.tile[y2][x2];
+            if (val1 == STATE_MONEY || val2 == STATE_MONEY) {
+                map_data.tile[y2][x1] = 0;
+                map_data.tile[y2][x2] = 0;
                 increase_money();
+                Mix_PlayChannel(-1, sound_beep, 0); // Phát âm thanh khi ăn xu
             }
-            if( val1 != BLANK_TILE || val2 != BLANK_TILE){
-                y_pos = y2*TILE_SIZE ;
-                y_pos -= (height_frame+1);
-                y_v = 0 ;
-                onGround = true ;
-                if(status == WALK_NONE){
-                     status = WALK_RIGHT;
+            else if (val1 == FLAG_TILE || val2 == FLAG_TILE) {
+                has_reached_flag = true;
+            }
+            if (val1 != BLANK_TILE && val1 != FLAG_TILE || val2 != BLANK_TILE && val2 != FLAG_TILE) {
+                y_pos = y2 * TILE_SIZE;
+                y_pos -= (height_frame + 1);
+                y_v = 0;
+                onGround = true;
+                if (status == WALK_NONE) {
+                    status = WALK_RIGHT;
                 }
             }
         }
-        else if(y_v < 0){
-            int val1 = map_data.tile[y1][x1] ;
-            int val2 = map_data.tile[y1][x2] ;
-            if(val1 == STATE_MONEY || val2 == STATE_MONEY){
-                map_data.tile[y1][x1] = 0 ;
-                map_data.tile[y1][x2] = 0 ;
+        else if (y_v < 0) {
+            int val1 = map_data.tile[y1][x1];
+            int val2 = map_data.tile[y1][x2];
+            if (val1 == STATE_MONEY || val2 == STATE_MONEY) {
+                map_data.tile[y1][x1] = 0;
+                map_data.tile[y1][x2] = 0;
                 increase_money();
+                Mix_PlayChannel(-1, sound_beep, 0); // Phát âm thanh khi ăn xu
             }
-            if(map_data.tile[y1][x1] != BLANK_TILE || map_data.tile[y1][x2] != BLANK_TILE){
-                y_pos =(y1+1)*TILE_SIZE;
-                y_v = 0 ;
+            else if (val1 == FLAG_TILE || val2 == FLAG_TILE) {
+                has_reached_flag = true;
+            }
+            if (map_data.tile[y1][x1] != BLANK_TILE && map_data.tile[y1][x1] != FLAG_TILE ||
+                map_data.tile[y1][x2] != BLANK_TILE && map_data.tile[y1][x2] != FLAG_TILE) {
+                y_pos = (y1 + 1) * TILE_SIZE;
+                y_v = 0;
             }
         }
     }
+
     x_pos += x_v;
     y_pos += y_v;
-    if(x_pos < 0){
+
+    if (x_pos < 0) {
         x_pos = 0;
     }
-    else if(x_pos +width_frame >map_data.maxX){
+    else if (x_pos + width_frame > map_data.maxX) {
         x_pos = map_data.maxX - width_frame;
     }
-    if(y_pos > map_data.maxY){
-        comeBack = COMEBACK_PLAYER ;
-    }
+
     if (y_pos > map_data.maxY) {
         comeBack = COMEBACK_PLAYER;
-        has_fallen = true; // Đánh dấu rằng nhân vật đã rơi xuống vực
+        has_fallen = true;
     }
 }
 void mainObject::increase_money(){

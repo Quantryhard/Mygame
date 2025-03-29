@@ -231,34 +231,24 @@ void threatObject::initBullet(bulletObject* p_bullet, SDL_Renderer* gScreen) {
         }
     }
 }
-void threatObject::makeBullet(SDL_Renderer* gScreen, const int& x_limit, const int& y_limit) {
-    // Bộ đếm thời gian bắn (static để giữ giá trị giữa các frame)
+void threatObject::makeBullet(SDL_Renderer* gScreen, const int& x_limit, const int& y_limit, const Map& map_data) {
     static int shoot_timer = 0;
     shoot_timer++;
-
-    // Bắn đạn mỗi 60 frame (khoảng 1 giây nếu FPS = 60)
-    if (shoot_timer >= 60 && comeBack == 0) { // Chỉ bắn khi bot còn "sống" (comeBack == 0)
+    if (shoot_timer >= 60 && comeBack == 0) {
         bulletObject* p_bullet = new bulletObject();
-        initBullet(p_bullet, gScreen); // Khởi tạo đạn
-        shoot_timer = 0; // Reset bộ đếm
+        initBullet(p_bullet, gScreen);
+        shoot_timer = 0;
     }
 
-    // Xử lý và hiển thị các viên đạn hiện có
     for (int i = 0; i < bullet_list.size(); i++) {
         bulletObject* p_bullet = bullet_list.at(i);
         if (p_bullet != NULL) {
             if (p_bullet->get_is_move()) {
-                int bullet_distance = rect.x - p_bullet->GetRect().x; // Khoảng cách từ bot đến đạn
-                if (bullet_distance < 300 && bullet_distance > -300) { // Giới hạn khoảng cách đạn
-                    p_bullet->handleMove(x_limit, y_limit);
-                    p_bullet->render(gScreen);
-                } else {
-                    p_bullet->set_is_move(false); // Dừng đạn khi vượt quá khoảng cách
-                }
+                p_bullet->handleMove(x_limit, y_limit, map_data);
+                p_bullet->render(gScreen);
             } else {
-                // Xóa đạn khỏi danh sách khi không còn di chuyển
                 removeBullet(i);
-                i--; // Giảm i vì danh sách bị thay đổi
+                i--;
             }
         }
     }

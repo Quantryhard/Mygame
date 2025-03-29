@@ -33,7 +33,7 @@ public:
 
     void set_bullet_type(const unsigned int& bulletType) { bullet_type = bulletType; }
     unsigned int get_bullet_type() const { return bullet_type; }
-    void handleMove(const int& x_border, const int& y_border);
+    void handleMove(const int& x_border, const int& y_border, const Map& map_data);
     int get_bullet_dir() const { return bullet_dir; }
     bool loadIMGBullet(SDL_Renderer* des);
 

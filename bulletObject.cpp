@@ -1,5 +1,5 @@
 #include "bulletObject.h"
-
+#include "gameMap.h"
 bulletObject::bulletObject(){
     x_v = 0 ;
     y_v = 0 ;
@@ -20,65 +20,32 @@ bool bulletObject::loadIMGBullet(SDL_Renderer* des){
     }
     return ret ;
 }
-void bulletObject::handleMove(const int&x_border , const int &y_border){
-    const int MAX_BULLET_DISTANCE = 300; // Giới hạn khoảng cách tối đa (1000 pixel)
+void bulletObject::handleMove(const int& x_border, const int& y_border, const Map& map_data) {
+    const int MAX_BULLET_DISTANCE = 300;
 
     if (bullet_dir == DIR_RIGHT) {
         rect.x += x_v;
         if (rect.x > x_border) {
             is_move = false;
         }
-    }
-    else if (bullet_dir == DIR_LEFT) {
+    } else if (bullet_dir == DIR_LEFT) {
         rect.x -= x_v;
         if (rect.x < 0) {
             is_move = false;
         }
     }
 
-    // Tính khoảng cách từ vị trí ban đầu
     int distance_x = abs(rect.x - initial_x);
     int distance_y = abs(rect.y - initial_y);
     int total_distance = sqrt(distance_x * distance_x + distance_y * distance_y);
 
-    // Nếu vượt quá khoảng cách tối đa, dừng viên đạn
     if (total_distance > MAX_BULLET_DISTANCE) {
         is_move = false;
     }
-//    else if(bullet_dir == DIR_UP){
-//        rect.y -= y_v;
-//        if(rect.y < 0){
-//            is_move = false;
-//        }
-//    }
-//    else if(bullet_dir == DIR_UP_LEFT){
-//        rect.x -= x_v;
-//        rect.y -= y_v;
-//        if(rect.x < 0 || rect.y < 0){
-//            is_move = false;
-//        }
-//    }
-//    else if(bullet_dir == DIR_UP_RIGHT){
-//        rect.x += x_v;
-//        rect.y -= y_v;
-//        if(rect.x > x_border || rect.y < 0){
-//            is_move = false;
-//        }
-//    }
-//    else if(bullet_dir == DIR_DOWN_LEFT){
-//        rect.x -= x_v;
-//        rect.y += y_v;
-//        if(rect.x < 0 || rect.y > y_border){
-//            is_move = false;
-//        }
-//    }
-//    else if(bullet_dir == DIR_DOWN_RIGHT){
-//        rect.x += x_v;
-//        rect.y += y_v;
-//        if(rect.x > x_border || rect.y > y_border){
-//            is_move = false;
-//        }
-//    }
+
+    if (checkCollisionWithMap(map_data)) {
+        is_move = false;
+    }
 }
 bool bulletObject::checkCollisionWithMap(const Map& map_data) {
     int x1 = 0;

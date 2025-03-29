@@ -40,7 +40,7 @@ public:
     std::vector<bulletObject*> get_bullet_list()const{return bullet_list;}
     void set_bullet_list(const std::vector<bulletObject*> &bl_list){bullet_list = bl_list;}
     void initBullet(bulletObject* p_bullet , SDL_Renderer* gScreen);
-    void makeBullet(SDL_Renderer* gScreen , const int& x_limit , const int& y_limit);
+    void makeBullet(SDL_Renderer* gScreen , const int& x_limit , const int& y_limit,const Map& map_data);
     void removeBullet(const int& indx);
     SDL_Rect getRectframe();
 private:

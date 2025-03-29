@@ -1,12 +1,12 @@
 // CommonFunc.h
 #ifndef COMMONFUNC_H
 #define COMMONFUNC_H
-
 #include <SDL.h>
 #include <vector>
 #include <string>
 #include <cmath>
 #include <fstream>
+
 //SCREEN
 static const int SCREEN_WIDTH = 1280;
 static const int SCREEN_HEIGHT = 640;
@@ -30,6 +30,7 @@ static SDL_Event gEvent;
 #define THREAT_GRAVITY_SPEED 10 /// độ rơi tự do của threat
 #define COMEBACK_PLAYER 60 // thoi gian hoi sinh
 #define THREAT_SPEED 3
+#define FLAG_TILE 10
 typedef struct input{
     int left ;
     int right ;

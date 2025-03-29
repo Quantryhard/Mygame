@@ -1,9 +1,10 @@
 #ifndef MAINOBJECT_H
 #define MAINOBJECT_H
-#include <vector> // luu tru bang dan
+
 #include "CommonFunc.h"
 #include "BaseObject.h"
 #include "bulletObject.h"
+#include <SDL_mixer.h>
 class mainObject : public BaseObject
 {
 public:
@@ -31,12 +32,17 @@ public:
     std::vector<bulletObject*> get_bullet_list() const{return p_bullet_list;}
     void removeBullet(const int &indx);
     void increase_money();
-    void handleBullet(SDL_Renderer* des);
+    void handleBullet(SDL_Renderer* des , const Map& map_data);
     void setComebacktime(const int cb){comeBack = cb;}
     SDL_Rect getRectframe();
     int getMoneycount() const{return money_count;}
     bool hasFallen() const { return has_fallen; }
     void resetFallen() { has_fallen = false; }
+    bool hasReachedFlag() const { return has_reached_flag; }
+    void resetFlag() { has_reached_flag = false; }
+
+    void setSoundBeep(Mix_Chunk* beep) { sound_beep = beep; }
+    void setSoundLaser(Mix_Chunk* laser) { sound_laser = laser; }
 private:
     std::vector<bulletObject*> p_bullet_list ; // danh sách đạn
     float x_v ; // speed x
@@ -57,5 +63,9 @@ private:
     int comeBack ;
     int money_count ;
     bool has_fallen; // ktra rơi vực
+    bool has_reached_flag; // chạm cờ
+    Mix_Chunk* sound_beep;
+    Mix_Chunk* sound_laser;
+
 };
 #endif // MAINOBJECT_H

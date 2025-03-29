@@ -1,11 +1,12 @@
 # depslib dependency file v1.0
-1743101859 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
+1743212968 source:d:\game_ltnc_24020283_luongtuquan\code2\main.cpp
 	<iostream>
 	<SDL.h>
 	<SDL_image.h>
 	<SDL_mixer.h>
 	<SDL_ttf.h>
 	<windows.h>
+	<SDL.h>
 	"CommonFunc.h"
 	"BaseObject.h"
 	"gameMap.h"
@@ -17,22 +18,22 @@
 	"playPower.h"
 	"geoMetric.h"
 
-1743081529 source:d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.cpp
+1743137759 source:d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.cpp
 	"CommonFunc.h"
 
-1743100787 d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.h
+1743177955 d:\game_ltnc_24020283_luongtuquan\code2\commonfunc.h
 	<SDL.h>
 	<vector>
 	<string>
 	<cmath>
 	<fstream>
 
-1742787047 source:d:\game_ltnc_24020283_luongtuquan\code2\baseobject.cpp
+1743136284 source:d:\game_ltnc_24020283_luongtuquan\code2\baseobject.cpp
 	"BaseObject.h"
 	"CommonFunc.h"
 	<SDL_image.h>
 
-1741927977 d:\game_ltnc_24020283_luongtuquan\code2\baseobject.h
+1743136284 d:\game_ltnc_24020283_luongtuquan\code2\baseobject.h
 	"CommonFunc.h"
 
 1743099852 source:d:\game_ltnc_24020283_luongtuquan\code2\gamemap.cpp
@@ -43,14 +44,14 @@
 	"CommonFunc.h"
 	"BaseObject.h"
 
-1743097874 source:d:\game_ltnc_24020283_luongtuquan\code2\mainobject.cpp
+1743213484 source:d:\game_ltnc_24020283_luongtuquan\code2\mainobject.cpp
 	"mainObject.h"
 
-1743096475 d:\game_ltnc_24020283_luongtuquan\code2\mainobject.h
-	<vector>
+1743183072 d:\game_ltnc_24020283_luongtuquan\code2\mainobject.h
 	"CommonFunc.h"
 	"BaseObject.h"
 	"bulletObject.h"
+	<SDL_mixer.h>
 
 1741975532 source:d:\game_ltnc_24020283_luongtuquan\code2\imptimer.cpp
 	"impTimer.h"
@@ -58,22 +59,23 @@
 
 1741974539 d:\game_ltnc_24020283_luongtuquan\code2\imptimer.h
 
-1743098423 source:d:\game_ltnc_24020283_luongtuquan\code2\bulletobject.cpp
+1743213383 source:d:\game_ltnc_24020283_luongtuquan\code2\bulletobject.cpp
 	"bulletObject.h"
+	"gameMap.h"
 
-1743097927 d:\game_ltnc_24020283_luongtuquan\code2\bulletobject.h
+1743183031 d:\game_ltnc_24020283_luongtuquan\code2\bulletobject.h
 	"BaseObject.h"
 	"CommonFunc.h"
 
-1743101378 source:d:\game_ltnc_24020283_luongtuquan\code2\threatobject.cpp
+1743183031 source:d:\game_ltnc_24020283_luongtuquan\code2\threatobject.cpp
 	"threatObject.h"
 
-1743099400 d:\game_ltnc_24020283_luongtuquan\code2\threatobject.h
+1743183137 d:\game_ltnc_24020283_luongtuquan\code2\threatobject.h
 	"BaseObject.h"
 	"CommonFunc.h"
 	"bulletObject.h"
 
-1742832413 source:d:\game_ltnc_24020283_luongtuquan\code2\explosionobject.cpp
+1743135948 source:d:\game_ltnc_24020283_luongtuquan\code2\explosionobject.cpp
 	"explosionObject.h"
 
 1742832346 d:\game_ltnc_24020283_luongtuquan\code2\explosionobject.h
