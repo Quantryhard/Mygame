@@ -1,5 +1,5 @@
 # Strike game - 2D Platformer
-![Game Screenshot](image/scrennshot.png)
+![Game Screenshot](image/image/Screenshot 2025-03-29 101001.png.png)
 A simple 2D platformer game built using C++ and the SDL (Simple DirectMedia Layer) library. The player controls a character to navigate through a tile-based map, collect coins, defeat enemies, and reach the flag to win. The game features a menu, gameplay mechanics, UI elements, sound effects, and background music.
 
 ## Table of Contents
