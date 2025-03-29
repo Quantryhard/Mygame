@@ -42,7 +42,7 @@ bool init() {
         return false;
     }
     SDL_SetHint(SDL_HINT_RENDER_SCALE_QUALITY, "1"); // Cải thiện chất lượng render
-    gWindow = SDL_CreateWindow("My game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN); // Tạo cửa sổ game
+    gWindow = SDL_CreateWindow("Strike game", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, SCREEN_WIDTH, SCREEN_HEIGHT, SDL_WINDOW_SHOWN); // Tạo cửa sổ game
     if (gWindow == NULL) { // Nếu tạo cửa sổ thất bại
         cout << SDL_GetError() << endl; // In lỗi
         return false;
@@ -186,7 +186,7 @@ int main(int argc, char* argv[]) {
     // Khởi tạo các văn bản cho menu
     textObject menu_title;
     menu_title.setColor(textObject::WHITE_TEXT); // Đặt màu trắng cho tiêu đề
-    menu_title.setText("My Game"); // Đặt nội dung tiêu đề
+    menu_title.setText("Strike Game"); // Đặt nội dung tiêu đề
 
     textObject menu_start;
     menu_start.setColor(textObject::WHITE_TEXT); // Đặt màu trắng cho mục "Start Game"
